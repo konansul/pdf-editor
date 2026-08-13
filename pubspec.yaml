@@ -37,7 +37,7 @@ dependencies:
   pdf: ^3.13.0
   printing: ^5.15.0
   pdfx: ^2.9.2
-  file_picker: ^11.0.3
+  file_picker: ^10.3.10
   image_picker: ^1.2.3
   path_provider: ^2.1.6
   cunning_document_scanner: ^2.8.0
