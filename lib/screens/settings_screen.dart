@@ -17,6 +17,7 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = AppTheme.of(context);
+    final mode = ref.watch(themeModeProvider).value ?? ThemeMode.system;
 
     return AppScaffold(
       title: 'Settings',
@@ -24,6 +25,13 @@ class SettingsScreen extends ConsumerWidget {
         padding: const EdgeInsets.only(top: 4, bottom: 32),
         children: [
           const SizedBox(height: 4),
+          const AppHairline(indent: 20),
+          AppRow(
+            title: 'Appearance',
+            subtitle: _appearanceLabel(mode),
+            onTap: () => _chooseAppearance(context, ref, mode),
+            trailing: Icon(Icons.chevron_right, size: 20, color: colors.muted),
+          ),
           const AppHairline(indent: 20),
           AppRow(
             title: 'Privacy Policy',
@@ -76,6 +84,51 @@ class SettingsScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  String _appearanceLabel(ThemeMode mode) => switch (mode) {
+        ThemeMode.light => 'Light',
+        ThemeMode.dark => 'Dark',
+        ThemeMode.system => 'Match device',
+      };
+
+  Future<void> _chooseAppearance(BuildContext context, WidgetRef ref, ThemeMode current) async {
+    final choice = await chooseOption(
+      context,
+      title: 'Appearance',
+      options: const [
+        SheetOption(
+          value: 'system',
+          label: 'Match device',
+          detail: 'Follow the light or dark setting on this phone',
+          icon: Icons.brightness_auto_outlined,
+        ),
+        SheetOption(
+          value: 'light',
+          label: 'Light',
+          detail: 'Always use the light theme',
+          icon: Icons.light_mode_outlined,
+        ),
+        SheetOption(
+          value: 'dark',
+          label: 'Dark',
+          detail: 'Always use the dark theme',
+          icon: Icons.dark_mode_outlined,
+        ),
+      ],
+    );
+
+    if (choice == null) return;
+
+    final selected = switch (choice) {
+      'light' => ThemeMode.light,
+      'dark' => ThemeMode.dark,
+      _ => ThemeMode.system,
+    };
+
+    if (selected != current) {
+      await ref.read(themeModeProvider.notifier).select(selected);
+    }
   }
 
   Future<void> _open(BuildContext context, Uri url) async {

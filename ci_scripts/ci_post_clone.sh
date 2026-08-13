@@ -15,8 +15,15 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-mod
 export PATH="$HOME/.cargo/bin:$PATH"
 rustup target add aarch64-apple-ios aarch64-apple-ios-sim
 
-echo "Resolving packages"
 cd "$CI_PRIMARY_REPOSITORY_PATH"
+
+if [ -n "$CI_BUILD_NUMBER" ]; then
+  echo "Setting build number to $CI_BUILD_NUMBER"
+  sed -i '' -E "s/^version: ([0-9]+\.[0-9]+\.[0-9]+)\+.*/version: \1+$CI_BUILD_NUMBER/" pubspec.yaml
+  grep '^version:' pubspec.yaml
+fi
+
+echo "Resolving packages"
 flutter pub get
 
 echo "Installing pods"

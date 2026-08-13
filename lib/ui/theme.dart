@@ -23,25 +23,25 @@ class AppColors {
   final Color danger;
 
   static const light = AppColors(
-    background: Color(0xFFF8F7FC),
+    background: Color(0xFFF4F6F9),
     surface: Color(0xFFFFFFFF),
-    ink: Color(0xFF16132A),
-    muted: Color(0xFF7C7796),
-    hairline: Color(0xFFE6E3F0),
-    accent: Color(0xFF5B2FE0),
+    ink: Color(0xFF17222E),
+    muted: Color(0xFF6B7C8F),
+    hairline: Color(0xFFE0E6EE),
+    accent: Color(0xFF2D465F),
     onAccent: Color(0xFFFFFFFF),
-    danger: Color(0xFFD23B3B),
+    danger: Color(0xFFC0453D),
   );
 
   static const dark = AppColors(
-    background: Color(0xFF0D0A1C),
-    surface: Color(0xFF181433),
-    ink: Color(0xFFECEAF7),
-    muted: Color(0xFF8A85A8),
-    hairline: Color(0xFF272147),
-    accent: Color(0xFFB472FC),
-    onAccent: Color(0xFF150E3F),
-    danger: Color(0xFFF06B6B),
+    background: Color(0xFF11181F),
+    surface: Color(0xFF1A242F),
+    ink: Color(0xFFE9EEF4),
+    muted: Color(0xFF8D9BAB),
+    hairline: Color(0xFF2A3644),
+    accent: Color(0xFF9DBBD9),
+    onAccent: Color(0xFF13202B),
+    danger: Color(0xFFE87A72),
   );
 }
 
