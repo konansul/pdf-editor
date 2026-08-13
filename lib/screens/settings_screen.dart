@@ -7,8 +7,8 @@ import '../ui/components.dart';
 import '../ui/sheets.dart';
 import '../ui/theme.dart';
 
-const _privacyUrl = 'https://konansul.github.io/collate-legal/privacy.html';
-const _termsUrl = 'https://konansul.github.io/collate-legal/terms.html';
+const _privacyUrl = 'https://konansul.github.io/pdf-editor-legal/privacy.html';
+const _termsUrl = 'https://konansul.github.io/pdf-editor-legal/terms.html';
 const _supportEmail = 'konansulx@gmail.com';
 
 class SettingsScreen extends ConsumerWidget {
