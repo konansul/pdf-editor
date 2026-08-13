@@ -10,14 +10,17 @@ void main() {
   runApp(const ProviderScope(child: PdfEditorApp()));
 }
 
-class PdfEditorApp extends StatelessWidget {
+class PdfEditorApp extends ConsumerWidget {
   const PdfEditorApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mode = ref.watch(themeModeProvider).value ?? ThemeMode.system;
+
     return MaterialApp(
       title: 'PDF Editor',
       debugShowCheckedModeBanner: false,
+      themeMode: mode,
       theme: buildTheme(AppColors.light, Brightness.light),
       darkTheme: buildTheme(AppColors.dark, Brightness.dark),
       builder: (context, child) {

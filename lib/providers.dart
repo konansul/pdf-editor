@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +31,31 @@ final toolsProvider = Provider((ref) => const PdfToolsService());
 final ocrProvider = Provider((ref) => const OcrService());
 
 final exportProvider = Provider((ref) => const ExportService());
+
+final themeModeProvider =
+    AsyncNotifierProvider<ThemeModeNotifier, ThemeMode>(ThemeModeNotifier.new);
+
+class ThemeModeNotifier extends AsyncNotifier<ThemeMode> {
+  static const _key = 'theme_mode';
+
+  @override
+  Future<ThemeMode> build() async {
+    final preferences = await SharedPreferences.getInstance();
+    return _decode(preferences.getString(_key));
+  }
+
+  Future<void> select(ThemeMode mode) async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString(_key, mode.name);
+    state = AsyncValue.data(mode);
+  }
+
+  static ThemeMode _decode(String? value) => switch (value) {
+        'light' => ThemeMode.light,
+        'dark' => ThemeMode.dark,
+        _ => ThemeMode.system,
+      };
+}
 
 final onboardingProvider =
     AsyncNotifierProvider<OnboardingNotifier, bool>(OnboardingNotifier.new);
