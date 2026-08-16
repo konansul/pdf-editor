@@ -382,8 +382,15 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
       await ref.read(libraryProvider.notifier).scan(folderId: _folderId);
     } on ScannerCancelled {
       return;
+    } on ScannerPermissionBlocked {
+      await _offerSettings();
     } on ScannerPermissionDenied {
-      await _report('Camera access needed', 'Allow camera access to scan documents.');
+      await _report(
+        'Camera access needed',
+        'Scanning uses the camera to find the edges of a page. Tap Scan a page again to allow it.',
+      );
+    } on ScannerFailed catch (error) {
+      await _report('Scanning failed', error.reason);
     } catch (error) {
       await _report('Scanning failed', 'Nothing was added to your library.');
     } finally {
@@ -457,6 +464,18 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
       MaterialPageRoute(builder: (context) => DocumentScreen(document: document)),
     );
     ref.invalidate(libraryProvider);
+  }
+
+  Future<void> _offerSettings() async {
+    if (!mounted) return;
+    final go = await confirmAction(
+      context,
+      title: 'Camera is turned off',
+      message: 'Scanning needs the camera, and permission was refused earlier. '
+          'Turn it back on in Settings, under Privacy or under this app.',
+      action: 'Open Settings',
+    );
+    if (go) await const ScannerService().openSettings();
   }
 
   Future<void> _report(String title, String message) async {
