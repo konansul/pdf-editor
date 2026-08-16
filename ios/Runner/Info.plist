@@ -30,8 +30,6 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>PDF Editor uses the camera to scan documents into PDFs. Scans stay on your device.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>PDF Editor saves exported pages to your photo library when you choose to.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>PDF Editor turns photos from your library into PDFs. Your photos stay on your device.</string>
 	<key>UIApplicationSceneManifest</key>
