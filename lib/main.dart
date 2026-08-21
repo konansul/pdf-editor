@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'providers.dart';
+import 'services/analytics_service.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/root_screen.dart';
 import 'ui/theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AnalyticsService.instance.start();
   runApp(const ProviderScope(child: PdfEditorApp()));
 }
 
@@ -30,6 +33,10 @@ class PdfEditorApp extends ConsumerWidget {
           child: child ?? const SizedBox.shrink(),
         );
       },
+      navigatorObservers: [
+        if (AnalyticsService.instance.observer != null)
+          AnalyticsService.instance.observer!,
+      ],
       home: const _Entry(),
     );
   }
