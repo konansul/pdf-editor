@@ -41,28 +41,6 @@ class PdfToolsService {
     }
   }
 
-  Future<File> protect(File source, String password) async {
-    final pdf = Pdf();
-    try {
-      final editor = await pdf.edit(FileSource(source));
-
-      final output = await _scratch('locked');
-      await editor.save(
-        await FileSink.create(output),
-        options: PdfSaveOptions.fullRewrite(
-          encryption: PdfEncryption.config(
-            ownerPassword: password,
-            userPassword: password,
-          ),
-        ),
-      );
-      await editor.dispose();
-      return output;
-    } finally {
-      await pdf.dispose();
-    }
-  }
-
   Future<File> _scratch(String prefix) async {
     final directory = await getTemporaryDirectory();
     return File(p.join(directory.path, '$prefix-${DateTime.now().millisecondsSinceEpoch}.pdf'));

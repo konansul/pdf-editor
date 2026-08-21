@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/document.dart';
 import '../providers.dart';
+import '../services/analytics_service.dart';
 import '../ui/components.dart';
 import '../ui/motion.dart';
 import '../ui/sheets.dart';
@@ -67,12 +70,6 @@ const toolSections = [
         title: 'Compress',
         detail: 'Make a document smaller to send',
         icon: Icons.compress,
-      ),
-      Tool(
-        id: 'password',
-        title: 'Password',
-        detail: 'Lock a document before sharing it',
-        icon: Icons.lock_outline,
       ),
     ],
   ),
@@ -183,6 +180,8 @@ class ToolsScreen extends ConsumerWidget {
     final document = await pickDocument(context, tool.title);
     if (document == null || !context.mounted) return;
 
+    unawaited(AnalyticsService.instance.toolUsed(tool.id));
+
     switch (tool.id) {
       case 'pages':
         pushScreen(context, PagesScreen(document: document));
@@ -190,8 +189,6 @@ class ToolsScreen extends ConsumerWidget {
         pushScreen(context, SplitScreen(document: document));
       case 'compress':
         await compressDocument(context, ref, document);
-      case 'password':
-        await protectDocument(context, ref, document);
       case 'text':
         pushScreen(context, TextScreen(document: document));
       case 'images':
@@ -234,46 +231,3 @@ Future<void> compressDocument(BuildContext context, WidgetRef ref, Document docu
   }
 }
 
-Future<void> protectDocument(BuildContext context, WidgetRef ref, Document document) async {
-  final password = await askForText(
-    context,
-    title: 'Set a password',
-    initial: '',
-    action: 'Lock',
-    hint: 'At least four characters',
-    obscure: true,
-  );
-
-  final trimmed = password?.trim();
-  if (trimmed == null) return;
-
-  if (trimmed.length < 4) {
-    if (context.mounted) {
-      await notify(
-        context,
-        title: 'Password too short',
-        message: 'Use at least four characters.',
-      );
-    }
-    return;
-  }
-
-  try {
-    await ref.read(libraryProvider.notifier).protect(document, trimmed, '${document.name} (locked)');
-    if (context.mounted) {
-      await notify(
-        context,
-        title: 'Locked',
-        message: 'A password-protected copy was added to your library.',
-      );
-    }
-  } catch (error) {
-    if (context.mounted) {
-      await notify(
-        context,
-        title: 'Could not lock',
-        message: 'The document was left unchanged.',
-      );
-    }
-  }
-}
