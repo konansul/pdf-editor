@@ -171,18 +171,6 @@ class LibraryNotifier extends AsyncNotifier<List<Document>> {
     return before - after;
   }
 
-  Future<void> protect(Document document, String password, String name) async {
-    final locked = await ref.read(toolsProvider).protect(File(document.filePath), password);
-    await ref.read(repositoryProvider).importPdf(
-          locked,
-          name: name,
-          lockedPageCount: document.pageCount,
-        );
-    if (await locked.exists()) await locked.delete();
-    ref.invalidateSelf();
-    await future;
-  }
-
   Future<void> importImages(List<File> images, {String? folderId}) async {
     final now = DateTime.now();
     final name = 'Photos ${DateFormat.yMMMd().format(now)} ${DateFormat.Hm().format(now)}';
