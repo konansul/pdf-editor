@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers.dart';
+import '../services/analytics_service.dart';
 import '../ui/components.dart';
 import '../ui/illustrations.dart';
 import '../ui/motion.dart';
@@ -37,8 +38,8 @@ const _pages = [
   _Page(
     art: PrivacyArt(),
     title: 'Nothing leaves your phone',
-    detail: 'No account, no server, no analytics. PDF Editor keeps working with the '
-        'network switched off, because it never needed it.',
+    detail: 'No account, no sign-in, no uploads. Your documents are processed on this '
+        'device and stay there, and every tool works with the network switched off.',
   ),
 ];
 
@@ -144,7 +145,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     );
   }
 
-  void _finish() => ref.read(onboardingProvider.notifier).complete();
+  void _finish() {
+    AnalyticsService.instance.onboardingFinished(_index);
+    ref.read(onboardingProvider.notifier).complete();
+  }
 }
 
 class _PageView extends StatelessWidget {

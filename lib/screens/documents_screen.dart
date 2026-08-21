@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import '../models/document.dart';
 import '../models/folder.dart';
 import '../providers.dart';
+import '../services/analytics_service.dart';
 import '../services/scanner_service.dart';
 import '../ui/components.dart';
 import '../ui/motion.dart';
@@ -380,9 +381,12 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     setState(() => _busy = true);
     try {
       await ref.read(libraryProvider.notifier).scan(folderId: _folderId);
+      await AnalyticsService.instance.documentAdded('camera', 1);
+      await AnalyticsService.instance.permissionAnswered('camera', true);
     } on ScannerCancelled {
       return;
     } on ScannerPermissionBlocked {
+      await AnalyticsService.instance.permissionAnswered('camera', false);
       await _offerSettings();
     } on ScannerPermissionDenied {
       await _report(

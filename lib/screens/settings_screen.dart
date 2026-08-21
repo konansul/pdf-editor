@@ -76,8 +76,10 @@ class SettingsScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 22, 20, 0),
             child: Text(
-              'PDF Editor works entirely offline. Nothing you scan or import leaves this device, '
-              'there is no account to create, and no analytics follow you around.',
+              'Your documents stay on this device. Scans and imports are never uploaded, '
+              'and there is no account to create. The app counts anonymous usage, such as '
+              'which tools are opened, to see what needs work. File names and contents are '
+              'never part of that.',
               style: TextStyle(fontSize: 13, height: 1.45, color: colors.muted),
             ),
           ),
