@@ -2,11 +2,24 @@
 
 A PDF toolkit for iOS and Android, built with Flutter. Scan pages with the
 camera, import images and existing PDFs, sort them into folders, merge files,
-reorder and rotate pages, split, compress, lock documents with a password,
-read the text off a page, and convert to images, Word or PowerPoint.
+reorder and rotate pages, split, compress, read the text off a page, and
+convert to images, Word or PowerPoint.
 
-Everything runs on the device. No API, no backend, no account, no analytics —
-the app works with the network switched off.
+Everything runs on the device. No backend and no account: documents are never
+uploaded, and the app works with the network switched off. Firebase Analytics
+counts anonymous usage, such as which tools are opened.
+
+**On the App Store:** [apps.apple.com/us/app/pdf-editor-scan](https://apps.apple.com/us/app/pdf-editor-scan/id6801246686)
+
+## Screenshots
+
+| Scan | Documents | New document |
+|---|---|---|
+| ![Scan](docs/screenshots/01-scan.jpg) | ![Documents](docs/screenshots/02-documents.jpg) | ![New document](docs/screenshots/03-new.jpg) |
+
+| Tools | Privacy |
+|---|---|
+| ![Tools](docs/screenshots/04-tools.jpg) | ![Privacy](docs/screenshots/05-privacy.jpg) |
 
 ## Running it
 
@@ -15,7 +28,7 @@ flutter pub get
 flutter run
 ```
 
-Requires Flutter 3.44+ and a Rust toolchain on `PATH` — `pdf_manipulator`
+Requires Flutter 3.44+ and a Rust toolchain on `PATH`: `pdf_manipulator`
 compiles a native engine for the iOS build.
 
 ## Layout
@@ -30,7 +43,7 @@ lib/
   providers.dart
 ```
 
-The UI is one custom design system shared by both platforms — see `lib/ui/`.
+The UI is one custom design system shared by both platforms, in `lib/ui/`.
 No Cupertino/Material branching.
 
 ## Pricing
@@ -48,3 +61,7 @@ Word and PowerPoint files are written as OOXML zips in pure Dart
 (`lib/services/office_writer.dart`). Word gets the recognised text without the
 original layout; PowerPoint gets one page image per slide. Anything more
 faithful needs a server, which this app deliberately does not have.
+
+## Legal
+
+[Privacy Policy](https://konansul.github.io/pdf-editor-legal/privacy.html) · [Terms of Use](https://konansul.github.io/pdf-editor-legal/terms.html)
